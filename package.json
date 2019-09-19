@@ -1,0 +1,25 @@
+{
+  "name": "supernova",
+  "version": "0.0.1",
+  "description": "static server",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fancyqin/Supernova.git"
+  },
+  "author": "QF",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fancyqin/Supernova/issues"
+  },
+  "homepage": "https://github.com/fancyqin/Supernova#readme",
+  "dependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-register": "^6.26.0",
+    "koa": "^2.8.1",
+    "nodemon": "^1.19.2"
+  }
+}
