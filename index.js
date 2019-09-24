@@ -2,7 +2,7 @@ import Koa from 'koa';
 import path from 'path';
 import fs from 'fs';
 import mime from './utils/mime';
-
+import {encryptJson,decrypt} from './utils/crypto'
 
 const app = new Koa();
 
@@ -12,10 +12,16 @@ const jsonPath = './assets/json'
 
 
 app.use(async (ctx) => {
-    let extName = path.extname(ctx.url)
+    let ctxUrl
+    if(ctx.url.indexOf('/static/') === 0){
+        ctxUrl = decrypt(ctx.url.replace('/static/',''))
+    }else {
+        ctxUrl = ctx.url
+    }
+    let extName = path.extname(ctxUrl)
     let ext = extName ? extName.slice(1) : 'json'
     let absolutePath = path.join(__dirname, ext==='json'?jsonPath:staticPath)
-    let reqPath = path.join(absolutePath, ctx.url+ (extName ?'':'.json'))
+    let reqPath = path.join(absolutePath, ctxUrl+ (extName ?'':'.json'))
     let content = ''
 
     if( !fs.existsSync( reqPath ) ) {
@@ -39,7 +45,12 @@ app.use(async (ctx) => {
         ctx.res.write(content, 'binary')
         ctx.res.end()
     } else {
-        ctx.body = content
+        if(ext==='json'){
+            ctx.body = encryptJson(content)
+        }else{
+            ctx.body = content
+        }
+        
     }
 })
 
